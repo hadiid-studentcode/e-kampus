@@ -85,6 +85,8 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Token creation failed'], 500);
         }
+        $request->session()->regenerate();
+ 
 
         return response()->json([
             'message' => 'Registrasi berhasil',
@@ -109,11 +111,14 @@ class AuthController extends Controller
             return response()->json(['message' => 'User not authenticated'], 401);
         }
 
+        $user->tokens()->delete();
 
-        if ($user->tokens()) {
-            $user->tokens()->delete();
-        }
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Logout successful'], 200);
     }
+
 }
