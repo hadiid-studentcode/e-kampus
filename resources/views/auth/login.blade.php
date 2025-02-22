@@ -41,18 +41,20 @@
                         </div>
                         <div class="card rounded-4">
                             <div class="card-body">
-                                @if(session()->has('error'))
-                                 <div class="alert border-0 border-start border-5 border-warning alert-dismissible fade show py-2">
-                                            <div class="d-flex align-items-center">
-                                                <div class="font-20 text-warning"><i class="bx bx-info-circle"></i></div>
-                                                <div class="ms-3">
-                                                    <h6 class="mb-0 text-warning ">Warning Alerts</h6>
-                                                    <div>{{ session()->get('error') }}</div>
-                                                </div>
+                                @if (session()->has('error'))
+                                    <div
+                                        class="alert border-0 border-start border-5 border-warning alert-dismissible fade show py-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="font-20 text-warning"><i class="bx bx-info-circle"></i></div>
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 text-warning ">Warning Alerts</h6>
+                                                <div>{{ session()->get('error') }}</div>
                                             </div>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
-                                        @endif
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
+                                @endif
                                 <div class="p-4 rounded">
                                     <div class="text-center">
                                         <h3 class="">Sign in</h3>
@@ -63,7 +65,7 @@
 
                                     <div class="form-body">
 
-                                       
+
 
                                         <form action="{{ route('login.authenticate') }}" method="POST"
                                             class="row g-3">

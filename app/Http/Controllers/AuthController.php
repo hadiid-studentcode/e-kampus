@@ -24,7 +24,7 @@ class AuthController extends Controller
 
 
             if (!Auth::attempt($credentials)) {
-            return back()->with('error', 'Invalid credentials');
+                return back()->with('error', 'Invalid credentials');
             }
             $request->session()->regenerate();
 
@@ -33,7 +33,7 @@ class AuthController extends Controller
             try {
                 $token = $user->createToken('auth_token')->plainTextToken;
             } catch (\Exception $e) {
-               return back()->with('error', 'Token creation failed');
+                return back()->with('error', 'Token creation failed');
             }
 
             session([
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
             return redirect()->route('dashboard.index');
         } catch (\Throwable $th) {
-           return back()->with('error', 'Invalid credentials');
+            return back()->with('error', 'Invalid credentials');
         }
     }
 
@@ -66,7 +66,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return back()->with('error', $validator->errors()->first());
         }
 
 
@@ -86,7 +86,7 @@ class AuthController extends Controller
         try {
             $token = $user->createToken('auth_token')->plainTextToken;
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Token creation failed'], 500);
+            return back()->with('error', 'Token creation failed');
         }
 
         session([
@@ -111,7 +111,7 @@ class AuthController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            return response()->json(['message' => 'User not authenticated'], 401);
+            return back()->with('error', 'User not authenticated');
         }
 
         $user->tokens()->delete();
@@ -121,7 +121,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
-
-        return response()->json(['message' => 'Logout successful'], 200);
     }
 }
