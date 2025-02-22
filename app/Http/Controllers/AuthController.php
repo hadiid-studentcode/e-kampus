@@ -14,35 +14,40 @@ class AuthController extends Controller
     /**
      * Login User
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): \Illuminate\Http\JsonResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $user = Auth::user();
-
         try {
-            $token = $user->createToken('auth_token')->plainTextToken;
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Token creation failed'], 500);
-        }
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
 
-        return response()->json([
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->roles->pluck('name')->first() ?? 'Mahasiswa'
-            ]
-        ], 200);
+
+            if (!Auth::attempt($credentials)) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+
+            $user = Auth::user();
+
+            try {
+                $token = $user->createToken('auth_token')->plainTextToken;
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Token creation failed'], 500);
+            }
+
+            return response()->json([
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->roles->pluck('name')->first() ?? 'Mahasiswa'
+                ]
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()], 401);
+        }
     }
 
     /**
@@ -104,8 +109,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'User not authenticated'], 401);
         }
 
-        if ($user->currentAccessToken()) {
-            $user->currentAccessToken()->delete();
+
+        if ($user->tokens()) {
+            $user->tokens()->delete();
         }
 
         return response()->json(['message' => 'Logout successful'], 200);
