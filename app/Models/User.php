@@ -44,4 +44,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function coursesTaught()
+    {
+        return $this->hasMany(Course::class, 'lecturer_id');
+    }
+
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user');
+    }
+
 }

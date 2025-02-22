@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('courses')->name('courses.')->group(function () {
+        Route::get('/', [CourseController::class, 'index'])->name('index');
+        Route::post('/', [CourseController::class, 'store'])->name('store');
+        Route::put('/{id}', [CourseController::class, 'update'])->name('update');
+        Route::delete('/{id}', [CourseController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/enroll', [CourseController::class, 'enroll'])->name('enroll');
+
     });
 });
