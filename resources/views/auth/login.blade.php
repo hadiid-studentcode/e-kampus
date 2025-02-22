@@ -22,6 +22,13 @@
         <button type="submit">Login</button>
     </form>
 
+
+
+       <h1>Welcome, {{ session('user.name') }}</h1>
+        <p>Email: {{ session('user.email') }}</p>
+        <p>Role: {{ session('user.role') }}</p>
+        <p>Token: {{ session('user.token') }}</p>
+
 </body>
 
 </html>

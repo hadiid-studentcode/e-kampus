@@ -47,14 +47,7 @@ class AuthController extends Controller
             ]);
 
 
-
-
-            // Redirect sesuai role
-            if ($user->hasRole('Dosen')) {
-                return redirect()->route('dosen.dashboard.index');
-            }
-
-            return redirect()->route('mahasiswa.dashboard.index');
+            return redirect()->route('dashboard.index');
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 401);
         }
