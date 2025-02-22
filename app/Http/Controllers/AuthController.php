@@ -14,7 +14,7 @@ class AuthController extends Controller
     /**
      * Login User
      */
-    public function authenticate(Request $request): \Illuminate\Http\JsonResponse
+    public function authenticate(Request $request)
     {
         try {
             $credentials = $request->validate([
@@ -26,6 +26,7 @@ class AuthController extends Controller
             if (!Auth::attempt($credentials)) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
+            $request->session()->regenerate();
 
             $user = Auth::user();
 
@@ -35,16 +36,25 @@ class AuthController extends Controller
                 return response()->json(['error' => 'Token creation failed'], 500);
             }
 
-            return response()->json([
-                'message' => 'Login successful',
-                'token' => $token,
+            session([
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->roles->pluck('name')->first() ?? 'Mahasiswa'
+                    'role' => $user->roles->pluck('name')->first() ?? 'Mahasiswa',
+                    'token' => $token
                 ]
-            ], 200);
+            ]);
+
+
+
+
+            // Redirect sesuai role
+            if ($user->hasRole('Dosen')) {
+                return redirect()->route('dosen.dashboard.index');
+            }
+
+            return redirect()->route('mahasiswa.dashboard.index');
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 401);
         }
@@ -85,19 +95,18 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Token creation failed'], 500);
         }
-        $request->session()->regenerate();
- 
 
-        return response()->json([
-            'message' => 'Registrasi berhasil',
-            'token' => $token,
+        session([
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->roles->pluck('name')->first(),
+                'token' => $token
             ]
-        ], 201);
+        ]);
+
+        return redirect()->route('login');
     }
 
     /**
@@ -105,6 +114,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+
         $user = auth()->user();
 
         if (!$user) {
@@ -113,12 +123,12 @@ class AuthController extends Controller
 
         $user->tokens()->delete();
 
-        Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        return redirect()->route('login');
+
         return response()->json(['message' => 'Logout successful'], 200);
     }
-
 }
