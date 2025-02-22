@@ -24,7 +24,7 @@ class AuthController extends Controller
 
 
             if (!Auth::attempt($credentials)) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+            return back()->with('error', 'Invalid credentials');
             }
             $request->session()->regenerate();
 
@@ -33,7 +33,7 @@ class AuthController extends Controller
             try {
                 $token = $user->createToken('auth_token')->plainTextToken;
             } catch (\Exception $e) {
-                return response()->json(['error' => 'Token creation failed'], 500);
+               return back()->with('error', 'Token creation failed');
             }
 
             session([
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
             return redirect()->route('dashboard.index');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 401);
+           return back()->with('error', 'Invalid credentials');
         }
     }
 
