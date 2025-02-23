@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MaterialsController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SubmissionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,4 +46,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/materials', [MaterialsController::class, 'store'])->name('materials.store');
     Route::get('/materials/{id}/download', [MaterialsController::class, 'download'])->name('materials.download');
+
+    Route::get('/classes/assignments/{id}', [AssignmentsController::class, 'index'])->name('classes.assignments.index');
+    Route::post('/assignments', [AssignmentsController::class, 'store'])->name('assignments.store');
+
+    Route::post('/submissions', [SubmissionsController::class, 'store'])->name('submissions.store');
+    Route::get('/submissions/{id}', [SubmissionsController::class, 'show'])->name('submissions.show');
+
+    Route::put('/submissions/{id}/grade', [SubmissionsController::class, 'grade'])->name('submissions.grade');
+
+
+
+    
 });

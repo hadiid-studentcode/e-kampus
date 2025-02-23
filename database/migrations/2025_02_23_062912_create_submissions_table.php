@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materials', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->foreignId('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('title');
+        Schema::create('submissions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('assignment_id')->references('id')->on('assignments')->onDelete('cascade');
+            $table->foreignId('student_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('file_path');
+            $table->integer('score')->nullable()->default(null);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('submissions');
     }
 };

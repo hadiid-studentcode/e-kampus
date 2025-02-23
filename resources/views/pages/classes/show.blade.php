@@ -34,7 +34,7 @@
                             <a class="nav-link mb-sm-3 mb-md-0 active" href="#materials" data-bs-toggle="tab">Materi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0" href="#assignments" data-bs-toggle="tab">Tugas</a>
+                            <a class="nav-link mb-sm-3 mb-md-0" href="{{ route('classes.assignments.index', $course->id) }}">Tugas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mb-sm-3 mb-md-0" href="#discussions" data-bs-toggle="tab">Forum Diskusi</a>
