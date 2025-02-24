@@ -43,7 +43,6 @@ class SubmissionsController extends Controller
             $submission->save();
             return back()->with('success', 'Submission graded successfully');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return back()->with('error', 'Error grading submission');
         }
     }

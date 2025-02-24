@@ -29,24 +29,7 @@
             </div>
             <div class="card-body">
                 <!-- Improved nav tabs for mobile -->
-                <div class="nav-wrapper position-relative mb-4">
-                    <ul class="nav nav-pills nav-fill flex-column flex-md-row gap-2 gap-md-0">
-                        <li class="nav-item">
-                            <a class="nav-link mb-2 mb-md-0" href="{{ route('classes.show', $course->id) }}">Materi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-2 mb-md-0 active"
-                                href="{{ route('classes.assignments.index', $course->id) }}">Tugas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-2 mb-md-0" href="#discussions" data-bs-toggle="tab">Forum Diskusi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-2 mb-md-0" href="#statistics" data-bs-toggle="tab">Statistik</a>
-                        </li>
-                    </ul>
-                </div>
-
+             @include('pages.classes.partials.tabs')
                 <div class="tab-content">
                     <div class="">
                         <!-- DOSEN ONLY -->

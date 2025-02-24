@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\MaterialsController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SubmissionsController;
@@ -52,8 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/submissions', [SubmissionsController::class, 'store'])->name('submissions.store');
     Route::get('/submissions/{id}', [SubmissionsController::class, 'show'])->name('submissions.show');
-
     Route::put('/submissions/{id}/grade', [SubmissionsController::class, 'grade'])->name('submissions.grade');
+
+    Route::get('/classes/discussions/{id}', [DiscussionsController::class, 'show'])->name('discussions.show');
 
 
 

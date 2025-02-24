@@ -28,22 +28,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="nav-wrapper position-relative mb-4">
-                    <ul class="nav nav-pills nav-fill flex-column flex-md-row" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0 active" href="#materials" data-bs-toggle="tab">Materi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0" href="{{ route('classes.assignments.index', $course->id) }}">Tugas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0" href="#discussions" data-bs-toggle="tab">Forum Diskusi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mb-sm-3 mb-md-0" href="#statistics" data-bs-toggle="tab">Statistik</a>
-                        </li>
-                    </ul>
-                </div>
+                @include('pages.classes.partials.tabs')
+
 
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="materials">
@@ -51,7 +37,8 @@
                             <div class="card mb-4 border">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">Upload Materi Baru</h5>
-                                    <form action="{{ route('materials.store') }}" method="POST" enctype="multipart/form-data" class="row g-3">
+                                    <form action="{{ route('materials.store') }}" method="POST"
+                                        enctype="multipart/form-data" class="row g-3">
                                         @csrf
                                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                                         <div class="col-12">
@@ -86,9 +73,11 @@
                                             @foreach ($materials as $material)
                                                 <tr>
                                                     <td>{{ $material->title }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($material->created_at)->format('d M Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($material->created_at)->format('d M Y') }}
+                                                    </td>
                                                     <td class="text-center">
-                                                        <a href="{{ route('materials.download', $material->id) }}" class="btn btn-sm btn-success px-3">
+                                                        <a href="{{ route('materials.download', $material->id) }}"
+                                                            class="btn btn-sm btn-success px-3">
                                                             Download
                                                         </a>
                                                     </td>
@@ -106,8 +95,8 @@
         </div>
     </div>
 
-           {{-- @include('pages.classes.partials.materials') --}}
-                    {{-- @include('pages.classes.partials.assignments')
+    {{-- @include('pages.classes.partials.materials') --}}
+    {{-- @include('pages.classes.partials.assignments')
                     @include('pages.classes.partials.discussions')
                     @include('pages.classes.partials.statistics') --}}
 @endsection
