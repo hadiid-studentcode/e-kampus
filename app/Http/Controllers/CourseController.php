@@ -10,7 +10,17 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::with('lecturer')->get();
+        $user = Auth::user();
+
+        $query = Course::with('lecturer', 'students');
+
+        if (!$user->hasRole('Mahasiswa')) {
+            $query->where('lecturer_id', $user->id);
+        }
+
+        $courses = $query->get();
+
+
 
         return view('pages.courses.index', compact('courses'));
     }
@@ -60,7 +70,8 @@ class CourseController extends Controller
             return back()->with('error', 'Gagal menghapus course');
         }
     }
-    public function enroll($id){
+    public function enroll($id)
+    {
         try {
             $course = Course::findOrFail($id);
             $user = Auth::user();
@@ -73,7 +84,6 @@ class CourseController extends Controller
 
             return redirect()->route('courses.index')->with('success', 'Berhasil mendaftar mata kuliah!');
         } catch (\Throwable $th) {
-          
         }
     }
 }
