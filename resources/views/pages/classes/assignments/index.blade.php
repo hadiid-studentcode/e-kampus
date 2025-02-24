@@ -29,36 +29,38 @@
             </div>
             <div class="card-body">
                 <!-- Improved nav tabs for mobile -->
-             @include('pages.classes.partials.tabs')
+                @include('pages.classes.partials.tabs')
                 <div class="tab-content">
                     <div class="">
                         <!-- DOSEN ONLY -->
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Buat Tugas Baru</h5>
-                                <form action="{{ route('assignments.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="course_id" value="{{ $course->id }}">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 mb-3">
-                                            <label class="form-label">Judul Tugas</label>
-                                            <input type="text" class="form-control" name="title">
+                        @if (auth()->user()->hasRole('Dosen'))
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Buat Tugas Baru</h5>
+                                    <form action="{{ route('assignments.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Judul Tugas</label>
+                                                <input type="text" class="form-control" name="title">
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-3">
+                                                <label class="form-label">Deadline</label>
+                                                <input type="datetime-local" class="form-control" name="deadline">
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label">Deskripsi</label>
+                                                <textarea class="form-control" name="description" rows="3"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary">Buat Tugas</button>
+                                            </div>
                                         </div>
-                                        <div class="col-12 col-md-6 mb-3">
-                                            <label class="form-label">Deadline</label>
-                                            <input type="datetime-local" class="form-control" name="deadline">
-                                        </div>
-                                        <div class="col-12 mb-3">
-                                            <label class="form-label">Deskripsi</label>
-                                            <textarea class="form-control" name="description" rows="3"></textarea>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">Buat Tugas</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <!-- VISIBLE TO ALL -->
                         <div class="card">
@@ -89,63 +91,68 @@
 
                                                         <div class="btn-group" role="group"
                                                             aria-label="Basic mixed styles example">
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#uplaodTugas_{{ $assignment->id }}"><i class='bx bx-upload' ></i></button>
+                                                            @if (auth()->user()->hasRole('Mahasiswa'))
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#uplaodTugas_{{ $assignment->id }}"><i
+                                                                        class='bx bx-upload'></i></button>
 
-                                                            <!-- Modal -->
-                                                            <div class="modal fade" id="uplaodTugas_{{ $assignment->id }}"
-                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <form action="{{ route('submissions.store') }}"
-                                                                            method="post" enctype="multipart/form-data">
-                                                                            @csrf
-                                                                            <div class="modal-header">
-                                                                                <h1 class="modal-title fs-5"
-                                                                                    id="exampleModalLabel">
-                                                                                    Upload Tugas</h1>
-                                                                                <button type="button" class="btn-close"
-                                                                                    data-bs-dismiss="modal"
-                                                                                    aria-label="Close"></button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <input type="hidden" name="assignment_id"
-                                                                                    value="{{ $assignment->id }}">
-                                                                                <input type="hidden" name="student_id"
-                                                                                    value="{{ auth()->user()->id }}">
+                                                                <!-- Modal -->
+                                                                <div class="modal fade"
+                                                                    id="uplaodTugas_{{ $assignment->id }}" tabindex="-1"
+                                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <form action="{{ route('submissions.store') }}"
+                                                                                method="post"
+                                                                                enctype="multipart/form-data">
+                                                                                @csrf
+                                                                                <div class="modal-header">
+                                                                                    <h1 class="modal-title fs-5"
+                                                                                        id="exampleModalLabel">
+                                                                                        Upload Tugas</h1>
+                                                                                    <button type="button" class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <input type="hidden"
+                                                                                        name="assignment_id"
+                                                                                        value="{{ $assignment->id }}">
+                                                                                    <input type="hidden" name="student_id"
+                                                                                        value="{{ auth()->user()->id }}">
 
-                                                                                <div class="mb-3">
-                                                                                    <label for="file"
-                                                                                        class="form-label">Upload
-                                                                                        Tugas</label>
-                                                                                    <input type="file"
-                                                                                        class="form-control"
-                                                                                        id="file" name="file"
-                                                                                        aria-describedby="emailHelp">
+                                                                                    <div class="mb-3">
+                                                                                        <label for="file"
+                                                                                            class="form-label">Upload
+                                                                                            Tugas</label>
+                                                                                        <input type="file"
+                                                                                            class="form-control"
+                                                                                            id="file" name="file"
+                                                                                            aria-describedby="emailHelp">
+
+                                                                                    </div>
+
+
 
                                                                                 </div>
-
-
-
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-bs-dismiss="modal">Close</button>
-                                                                                <button type="submit"
-                                                                                    class="btn btn-primary">Save
-                                                                                    changes</button>
-                                                                            </div>
-                                                                        </form>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary">Save
+                                                                                        changes</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-
-                                                            <a href="{{ route('submissions.show', $assignment->id) }}"  class="btn btn-info" ><i
-                                                                    class="bx bx-show"></i></a>
-
+                                                            @endif
+                                                            @if (auth()->user()->hasRole('Dosen'))
+                                                                <a href="{{ route('submissions.show', $assignment->id) }}"
+                                                                    class="btn btn-info"><i class="bx bx-show"></i></a>
+                                                            @endif
                                                         </div>
                                                     </td>
 
