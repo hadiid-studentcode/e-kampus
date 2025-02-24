@@ -105,7 +105,7 @@
                                     <th>{{ $loop->iteration }}</th>
 
                                     <td>{{ $course->name }}</td>
-                               
+
 
                                     @if (Auth::user()->getRoleNames()->first() == 'Mahasiswa')
                                         <td>{{ $course->lecturer->name }}</td>
@@ -197,19 +197,16 @@
                                                 </div>
                                             @endif
 
-                                            @if (Auth::user()->getRoleNames()->first() == 'Mahasiswa') 
-
-                                            @if($course->students->contains(Auth::user()->id))
-                                            
-                                         <span class="badge rounded-pill text-bg-success">Sudah Terdaftar</span>
-                                             
-
+                                            @if (Auth::user()->getRoleNames()->first() == 'Mahasiswa')
+                                                @if ($course->students->contains(Auth::user()->id))
+                                                    <span class="badge rounded-pill text-bg-success">Sudah Terdaftar</span>
                                                 @else
-                                                   <form action="{{ route('courses.enroll', $course->id) }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success"><i
-                                                            class="bx bx-check"></i></button>
-                                                </form>
+                                                    <form action="{{ route('courses.enroll', $course->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success"><i
+                                                                class="bx bx-check"></i></button>
+                                                    </form>
                                                 @endif
                                             @endif
 
