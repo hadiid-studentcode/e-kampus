@@ -32,13 +32,10 @@
                             <i class="bx bx-conversation"></i>
                             Mulai Diskusi Baru
                         </h5>
-                        <form action="#" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="form-label">Topik Diskusi</label>
-                                <input type="text" name="title" class="form-control"
-                                    placeholder="Masukkan topik diskusi...">
-                            </div>
+                        <form action="{{ route('discussions.store') }}" method="POST">
+                         
+                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                         
                             <div class="mb-3">
                                 <label class="form-label">Pesan</label>
                                 <textarea name="content" class="form-control" rows="3" placeholder="Tulis pesan diskusi..."></textarea>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Discussions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DiscussionsController extends Controller
 {
@@ -17,5 +18,20 @@ class DiscussionsController extends Controller
 
 
         return view('pages.classes.discussions.show', compact('discussion', 'course'));
+    }
+
+    public function store(Request $request){
+        try {
+            Discussions::create([
+                'course_id' => $request->course_id,
+                'user_id' => Auth::id(),
+                'content' => $request->content
+            ]);
+
+          return response()->json(['success' => true]);
+
+        } catch (\Throwable $th) {
+         return response()->json(['success' => false]);
+        }
     }
 }
