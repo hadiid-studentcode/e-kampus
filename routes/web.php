@@ -13,7 +13,7 @@ use App\Http\Controllers\SubmissionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware('guest')->group(function () {
@@ -56,7 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/submissions/{id}/grade', [SubmissionsController::class, 'grade'])->name('submissions.grade');
 
     Route::get('/classes/discussions/{id}', [DiscussionsController::class, 'show'])->name('discussions.show');
-
 
 
     

@@ -20,7 +20,6 @@ class Discussions extends Model
     }
     public function replies()
     {
-        return $this->hasMany(Replies::class);
+        return $this->hasMany(Replies::class, 'discussion_id');
     }
-    
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Discussions;
+use App\Models\Replies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,15 +13,28 @@ class DiscussionsController extends Controller
     public function show($id)
     {
         $course_id = $id;
-        $discussion = Discussions::with('replies')->where('course_id', $course_id)->get();
+
 
         $course = Course::with('lecturer')->find($id);
+        $course_id = $course->id;
 
-
-        return view('pages.classes.discussions.show', compact('discussion', 'course'));
+        $token = Auth::user()->createToken('auth_token')->plainTextToken;
+        return view('pages.classes.discussions.show', compact('course', 'token', 'course_id'));
     }
 
-    public function store(Request $request){
+    public function getDataDiscussions(Request $request)
+    {
+        $discussions = Discussions::with(['user', 'replies.user'])
+            ->withCount('replies')
+            ->where('course_id', $request->course_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($discussions);
+    }
+
+    public function store(Request $request)
+    {
         try {
             Discussions::create([
                 'course_id' => $request->course_id,
@@ -28,10 +42,23 @@ class DiscussionsController extends Controller
                 'content' => $request->content
             ]);
 
-          return response()->json(['success' => true]);
-
+            return response()->json(['success' => true]);
         } catch (\Throwable $th) {
-         return response()->json(['success' => false]);
+            return response()->json(['success' => false]);
+        }
+    }
+    public function replies(Request $request)
+    {
+        try {
+            Replies::create([
+                'discussion_id' => $request->discussion_id,
+                'user_id' => Auth::id(),
+                'content' => $request->content
+            ]);
+
+            return response()->json(['success' => true]);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false]);
         }
     }
 }

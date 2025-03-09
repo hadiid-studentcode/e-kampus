@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
+@push('css')
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@endpush
+
 @section('content')
-    <div class="page-content container-fluid">
+    <div class="page-content container-fluid" x-data="alphineData">
         <!-- Breadcrumb -->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-4">
             <div class="breadcrumb-title pe-3">Diskusi Kelas</div>
@@ -32,83 +36,185 @@
                             <i class="bx bx-conversation"></i>
                             Mulai Diskusi Baru
                         </h5>
-                        <form action="{{ route('discussions.store') }}" method="POST">
-                         
-                            <input type="hidden" name="course_id" value="{{ $course->id }}">
-                         
+                        <form @submit.prevent="handleSubmit()">
+
                             <div class="mb-3">
                                 <label class="form-label">Pesan</label>
-                                <textarea name="content" class="form-control" rows="3" placeholder="Tulis pesan diskusi..."></textarea>
+                                <textarea name="content" class="form-control" rows="3" x-model="form.content"
+                                    placeholder="Tulis pesan diskusi..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bx bx-plus-circle me-1"></i>
                                 Mulai Diskusi
                             </button>
                         </form>
+
                     </div>
                 </div>
 
                 <!-- Discussion List -->
                 <div class="discussions-list">
-                    <!-- Discussion Card 1 -->
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Cara Menggunakan Laravel Migration</h5>
-                                <span class="badge bg-primary">3 balasan</span>
-                            </div>
+                    <template x-if="!discussions.length">
+                        <div class="text-center py-4">
+                            <p class="text-muted">Belum ada diskusi</p>
+                        </div>
+                    </template>
 
-                            <!-- Main Discussion -->
-                            <div class="discussion-content mb-4">
-                                <p class="card-text">Bagaimana cara membuat dan menjalankan migration di Laravel? Saya masih
-                                    bingung dengan konsepnya.</p>
-                                <div class="d-flex align-items-center text-muted small">
-                                    <img src="https://ui-avatars.com/api/?name=Budi&background=random"
-                                        class="rounded-circle me-2" width="32" height="32" alt="Avatar">
-                                    <span>Budi Santoso (Mahasiswa) • 2 jam yang lalu</span>
+                    <template x-for="discussion in discussions" :key="discussion.id">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge bg-primary" x-text="discussion.replies_count + ' balasan'"></span>
                                 </div>
-                            </div>
 
-                            <!-- Replies Section -->
-                            <div class="replies-section">
-                                <div class="ms-4 mb-3">
-                                    <div class="d-flex gap-2">
-                                        <img src="https://ui-avatars.com/api/?name=Dosen&background=random"
-                                            class="rounded-circle" width="32" height="32" alt="Avatar">
-                                        <div class="flex-grow-1">
-                                            <div class="bg-light p-3 rounded">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <span class="fw-bold">Dr. Ahmad (Dosen)</span>
-                                                    <small class="text-muted">1 jam yang lalu</small>
+                                <!-- Main Discussion -->
+                                <div class="discussion-content mb-4">
+                                    <p class="card-text" x-text="discussion.content"></p>
+                                    <div class="d-flex align-items-center text-muted small">
+                                        <img :src="'https://ui-avatars.com/api/?name=' + discussion.user.name +
+                                            '&background=random'"
+                                            class="rounded-circle me-2" width="32" height="32"
+                                            :alt="discussion.user.name">
+                                        <span x-text="discussion.user.name + ' • ' + discussion.created_at"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Replies Section -->
+                                <div class="replies-section">
+                                    <template x-for="reply in discussion.replies" :key="reply.id">
+                                        <div class="ms-4 mb-3">
+                                            <div class="d-flex gap-2">
+                                                <img :src="'https://ui-avatars.com/api/?name=' + reply.user.name +
+                                                    '&background=random'"
+                                                    class="rounded-circle" width="32" height="32"
+                                                    :alt="reply.user.name">
+                                                <div class="flex-grow-1">
+                                                    <div class="bg-light p-3 rounded">
+                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                            <span class="fw-bold" x-text="reply.user.name"></span>
+                                                            <small class="text-muted" x-text="reply.created_at"></small>
+                                                        </div>
+                                                        <p class="mb-0" x-text="reply.content"></p>
+                                                    </div>
                                                 </div>
-                                                <p class="mb-0">Migration adalah cara untuk mengatur struktur database.
-                                                    Gunakan perintah 'php artisan make:migration create_table_name' untuk
-                                                    membuatnya.</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
+                                </div>
+
+                                <!-- Reply Form -->
+                                <div class="mt-3">
+                                    <form @submit.prevent="handleReply(discussion.id)" class="d-flex gap-2">
+                                        <div class="flex-grow-1">
+                                            <input type="text" x-model="replyForm.forms[discussion.id]"
+                                                class="form-control" placeholder="Tulis balasan...">
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="bx bx-send me-1"></i>
+                                            Balas
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-
-                            <!-- Reply Form -->
-                            <div class="mt-3">
-                                <form action="#" method="POST" class="d-flex gap-2">
-                                    <div class="flex-grow-1">
-                                        <input type="text" name="content" class="form-control"
-                                            placeholder="Tulis balasan...">
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="bx bx-send me-1"></i>
-                                        Balas
-                                    </button>
-                                </form>
-                            </div>
                         </div>
-                    </div>
-
-                    <!-- You can add more discussion cards here -->
+                    </template>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('alphineData', () => ({
+                discussions: [],
+                form: {
+                    course_id: @json($course_id),
+                    content: ''
+
+                },
+                token: @json($token),
+
+                init() {
+                    this.getData(this.token);
+                },
+
+                async handleSubmit(token) {
+                    try {
+
+                        let response = await axios.post('{{ route('discussions.store') }}', this
+                            .form, {
+                                headers: {
+                                    'Authorization': `Bearer ${this.token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(response => {
+                            console.log(response);
+                            this.resetFrom();
+                        }).catch(error => {
+                            console.log(error);
+                        })
+
+                    } catch (error) {
+                        console.log(errror);
+                    }
+                },
+                resetFrom() {
+                    this.form = {
+                        content: ''
+                    };
+                },
+
+                async getData(token) {
+                    if (!token) {
+                        console.error('Token tidak ditemukan!');
+                        return;
+                    }
+
+                    try {
+                        let response = await axios.post(
+                            `{{ route('discussions.getDataDiscussions') }}`, {
+                                course_id: @json($course_id)
+                            }, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Accept': 'application/json'
+                                }
+                            }
+                        );
+                        this.discussions = response.data;
+                    } catch (error) {
+                        console.error('Error fetching discussions:', error);
+                    }
+                },
+
+                replyForm: {
+                    forms: {} // Will store content for each discussion
+                },
+
+                async handleReply(discussionId) {
+                    try {
+                        await axios.post(`{{ url('api/discussions') }}/${discussionId}/replies`, {
+                            content: this.replyForm.forms[discussionId],
+                            discussion_id: discussionId
+                        }, {
+                            headers: {
+                                'Authorization': `Bearer ${this.token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        // Clear only the specific discussion's reply form
+                        this.replyForm.forms[discussionId] = '';
+                        this.getData(this.token);
+                    } catch (error) {
+                        console.error('Error sending reply:', error);
+                    }
+                }
+
+            }))
+        })
+    </script>
+@endpush

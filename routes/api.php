@@ -10,5 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/discussions', [DiscussionsController::class, 'store'])->name('discussions.store')->middleware('auth:sanctum');
-
-
+Route::post('/discussions/{id}/replies', [DiscussionsController::class, 'replies'])->name('discussions.replies')->middleware('auth:sanctum');
+Route::post('/discussions/getDataDiscussions', [DiscussionsController::class, 'getDataDiscussions'])->name('discussions.getDataDiscussions')->middleware('auth:sanctum');
