@@ -157,6 +157,8 @@
                             console.log(error);
                         })
 
+                        this.getData(this.token);
+
                     } catch (error) {
                         console.log(errror);
                     }
