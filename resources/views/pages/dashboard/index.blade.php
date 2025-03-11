@@ -20,7 +20,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="" id="chart1"></div>
                 </div>
             </div>
             <div class="col">
@@ -35,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="" id="chart2"></div>
+                    
                 </div>
             </div>
             <div class="col">
@@ -50,7 +49,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="" id="chart3"></div>
                 </div>
             </div>
             <div class="col">
@@ -65,7 +63,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="" id="chart4"></div>
                 </div>
             </div>
         </div>
@@ -77,15 +74,10 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <h5 class="card-title mb-0">Mahasiswa per Mata Kuliah</h5>
-                            <div class="ms-auto">
-                                <select class="form-select form-select-sm">
-                                    <option>Semester Berjalan</option>
-                                    <option>Semester Sebelumnya</option>
-                                </select>
-                            </div>
+                           
                         </div>
                         <div class="chart-container" style="min-height: 300px">
-                            <div id="chart5"></div>
+                            <div id="chart2"></div>
                         </div>
                     </div>
                 </div>
@@ -195,9 +187,8 @@
     <script src="{{ asset('assets/plugins/highcharts/js/export-data.js') }}"></script>
     <script src="{{ asset('assets/plugins/highcharts/js/accessibility.js') }}"></script>
     <script src="{{ asset('assets/plugins/apexcharts-bundle/js/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/index2.js') }}"></script>
+    <script src="{{ asset('assets/js/index4.js') }}"></script>
     <script>
-        // Add this to ensure charts are responsive
         $(window).on('resize', function() {
             if (typeof chart5 !== 'undefined') {
                 chart5.updateSize();

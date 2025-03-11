@@ -1,77 +1,77 @@
 $(function () {
 	"use strict";
 	// chart 1
-	Highcharts.chart('chart1', {
-		chart: {
-			height: 350,
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			plotShadow: false,
-			type: 'pie',
-			styledMode: true
-		},
-		credits: {
-			enabled: false
-		},
-		title: {
-			text: 'Sessions Device'
-		},
-		subtitle: {
-			text: 'Ratio of devices use by users'
-		},
-		tooltip: {
-			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-		},
-		accessibility: {
-			point: {
-				valueSuffix: '%'
-			}
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				cursor: 'pointer',
-				innerSize: 120,
-				dataLabels: {
-					enabled: true,
-					format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-				},
-				showInLegend: true
-			}
-		},
-		//colors: ['#ff9ad5', '#50b5ff', '#5a65dc'],
-		series: [{
-			name: 'Users',
-			colorByPoint: true,
-			data: [{
-				name: 'Desktop',
-				y: 56
-			}, {
-				name: 'Mobile',
-				y: 30
-			}, {
-				name: 'Tablet',
-				y: 14
-			}]
-		}],
-		responsive: {
-			rules: [{
-				condition: {
-					maxWidth: 500
-				},
-				chartOptions: {
-					plotOptions: {
-						pie: {
-							innerSize: 140,
-							dataLabels: {
-								enabled: false
-							}
-						}
-					},
-				}
-			}]
-		}
-	});
+		// Highcharts.chart('chart1', {
+		// 	chart: {
+		// 		height: 350,
+		// 		plotBackgroundColor: null,
+		// 		plotBorderWidth: null,
+		// 		plotShadow: false,
+		// 		type: 'pie',
+		// 		styledMode: true
+		// 	},
+		// 	credits: {
+		// 		enabled: false
+		// 	},
+		// 	title: {
+		// 		text: 'Sessions Device'
+		// 	},
+		// 	subtitle: {
+		// 		text: 'Ratio of devices use by users'
+		// 	},
+		// 	tooltip: {
+		// 		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		// 	},
+		// 	accessibility: {
+		// 		point: {
+		// 			valueSuffix: '%'
+		// 		}
+		// 	},
+		// 	plotOptions: {
+		// 		pie: {
+		// 			allowPointSelect: true,
+		// 			cursor: 'pointer',
+		// 			innerSize: 120,
+		// 			dataLabels: {
+		// 				enabled: true,
+		// 				format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+		// 			},
+		// 			showInLegend: true
+		// 		}
+		// 	},
+		// 	//colors: ['#ff9ad5', '#50b5ff', '#5a65dc'],
+		// 	series: [{
+		// 		name: 'Users',
+		// 		colorByPoint: true,
+		// 		data: [{
+		// 			name: 'Desktop',
+		// 			y: 56
+		// 		}, {
+		// 			name: 'Mobile',
+		// 			y: 30
+		// 		}, {
+		// 			name: 'Tablet',
+		// 			y: 14
+		// 		}]
+		// 	}],
+		// 	responsive: {
+		// 		rules: [{
+		// 			condition: {
+		// 				maxWidth: 500
+		// 			},
+		// 			chartOptions: {
+		// 				plotOptions: {
+		// 					pie: {
+		// 						innerSize: 140,
+		// 						dataLabels: {
+		// 							enabled: false
+		// 						}
+		// 					}
+		// 				},
+		// 			}
+		// 		}]
+		// 	}
+		// });
 	// chart 2
 	// Create the chart
 	Highcharts.chart('chart2', {
@@ -317,149 +317,7 @@ $(function () {
 			}]
 		}
 	});
-	// chart 3
-	Highcharts.chart('chart3', {
-		chart: {
-			height: 330,
-			type: 'column',
-			styledMode: true
-		},
-		credits: {
-			enabled: false
-		},
-		title: {
-			text: 'Website Audience Overview',
-			style: {
-				display: 'none',
-			}
-		},
-		subtitle: {
-			text: 'Website Audience Overview',
-			style: {
-				display: 'none',
-			}
-		},
-		xAxis: {
-			categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-			crosshair: true
-		},
-		yAxis: {
-			min: 0,
-			title: {
-				text: 'Rainfall (mm)',
-				style: {
-					display: 'none',
-				}
-			}
-		},
-		exporting: {
-			buttons: {
-				contextButton: {
-					enabled: false,
-				}
-			}
-		},
-		tooltip: {
-			headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-			pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-			footerFormat: '</table>',
-			shared: true,
-			useHTML: true
-		},
-		plotOptions: {
-			column: {
-				pointPadding: 0.2,
-				borderWidth: 0
-			}
-		},
-		//colors: ['#50b5ff', '#ff9ad5'],
-		series: [{
-			name: 'New Visitors',
-			data: [70.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-		}, {
-			name: 'Returning Visitors',
-			data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-		}]
-	});
-	// chart 4
-	// Make monochrome colors
-	var pieColors = (function () {
-		var colors = ['#0370e6', 'rgb(3 112 230 / 76%)', 'rgb(3 112 230 / 60%)', 'rgb(3 112 230 / 46%)', 'rgb(3 112 230 / 26%)'],
-			base = Highcharts.getOptions().colors[0],
-			i;
-		for (i = 0; i < 10; i += 1) {
-			// Start out with a darkened base color (negative brighten), and end
-			// up with a much brighter color
-			colors.push(Highcharts.color(base).brighten((i - 3) / 7).get());
-		}
-		return colors;
-	}());
-	// Build the chart
-	Highcharts.chart('chart4', {
-		chart: {
-			//height:380,
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			plotShadow: false,
-			type: 'pie',
-			//styledMode: true
-		},
-		credits: {
-			enabled: false
-		},
-		exporting: {
-			buttons: {
-				contextButton: {
-					enabled: false,
-				}
-			}
-		},
-		title: {
-			text: 'Visitors by Location'
-		},
-		tooltip: {
-			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-		},
-		accessibility: {
-			point: {
-				valueSuffix: '%'
-			}
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				cursor: 'pointer',
-				innerSize: 0,
-				colors: pieColors,
-				dataLabels: {
-					enabled: true,
-					format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-					distance: -50,
-					filter: {
-						property: 'percentage',
-						operator: '>',
-						value: 4
-					}
-				}
-			}
-		},
-		series: [{
-			name: 'Visitors',
-			data: [{
-				name: 'USA',
-				y: 61.41
-			}, {
-				name: 'Australia',
-				y: 11.84
-			}, {
-				name: 'India',
-				y: 4.67
-			}, {
-				name: 'China',
-				y: 4.18
-			}, ]
-		}]
-	});
+
 	// chart 5
 	Highcharts.chart('chart5', {
 		chart: {
